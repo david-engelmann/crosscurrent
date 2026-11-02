@@ -4,11 +4,11 @@ A reconciliation protocol for parallel agent work, where every agent's diff is c
 
 ## What this is
 
-Worktree tools isolate agents well and do nothing about semantic drift, so everything compiles and merges cleanly and the integration tax arrives all at once. Crosscurrent runs three mechanisms instead of a merge tool. A staging branch continuously absorbs every live agent's diff, so integration is a stream and not an event. A divergence detector works above the text level, flagging two incompatible contracts for one interface or a helper written twice under two names. And the conflict is handed back to the pair that created it as a sized reconciliation task, never saved up for a human merge day. The boundary with its sibling is one sentence. Forkdrift finds the divergence across the fleet, crosscurrent reconciles the pairs it catches.
+Worktree tools isolate agents well and do nothing about semantic drift, so everything compiles and merges cleanly and the integration tax arrives all at once. Crosscurrent runs two mechanisms instead of a merge tool. A staging branch continuously absorbs every live agent's diff, so integration is a stream and not an event. And each divergence that detection hands it is returned to the pair that created it as a sized reconciliation task, never saved up for a human merge day. Detection itself sits with its sibling. Forkdrift's detector works above the text level, flagging two incompatible contracts for one interface or a helper written twice under two names. The boundary with its sibling is one sentence. Forkdrift finds the divergence across the fleet, crosscurrent reconciles the pairs it catches.
 
 ## Status
 
-Seeded in October 2026. The build has not started. Part of the impatient programming portfolio, in the Fleet Operations arc.
+Setup slice in progress. The build has not started. Closed rounds 0 of 100. The contract is a stub and is not yet met. Part of the impatient programming portfolio, in the Fleet Operations arc.
 
 ## Licence
 
