@@ -153,6 +153,27 @@ MISLABELLED_PRESENCE_RECORD = """divergence shard-store dual presence
 """
 
 
+SWAPPED_SOURCE_RECORD = """divergence shard-store timeout term-value
+  left (run-a.tape) timeout = 30
+  right (run-b.tape) timeout = 45
+
+divergence shard-store store result-type
+  left (run-b.tape) operation store = ack
+  right (run-b.tape) operation store = receipt
+"""
+
+
+def test_cli_inconsistent_row_sources_exit_2_without_traceback(tmp_path):
+    left, right, record = session(tmp_path, record=SWAPPED_SOURCE_RECORD)
+    result = run_cli("handback", left, right, record)
+    assert result.returncode == 2
+    assert result.stderr.startswith("error:")
+    assert "not the left source of the record" in result.stderr
+    assert result.stderr.count("\n") == 1
+    assert "Traceback" not in result.stderr
+    assert result.stdout == ""
+
+
 def test_cli_handback_over_a_presence_only_record(tmp_path):
     left, right, record = session(tmp_path, record=PRESENCE_RECORD)
     result = run_cli("handback", left, right, record)

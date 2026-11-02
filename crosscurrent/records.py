@@ -53,12 +53,15 @@ def parse_divergence_record(text, source):
     """Parse one recorded divergence record or raise RecordError."""
     blocks = []
     pending = None
+    side_sources = {}
     for lineno, raw in enumerate(text.splitlines(), start=1):
         if not raw.strip():
             continue
         if raw.startswith("divergence "):
             if pending is not None:
-                blocks.append(_finish_block(pending, source))
+                block = _finish_block(pending, source)
+                _check_row_sources(block, pending, side_sources, source)
+                blocks.append(block)
             pending = _open_block(raw, source, lineno)
             continue
         match = ROW.match(raw)
@@ -71,7 +74,9 @@ def parse_divergence_record(text, source):
             f"in a divergence record, {raw.strip()}"
         )
     if pending is not None:
-        blocks.append(_finish_block(pending, source))
+        block = _finish_block(pending, source)
+        _check_row_sources(block, pending, side_sources, source)
+        blocks.append(block)
     interfaces = {block.interface for block in blocks}
     if len(interfaces) > 1:
         raise RecordError(
@@ -89,6 +94,36 @@ def parse_divergence_record(text, source):
             )
         seen.add(key)
     return tuple(blocks)
+
+
+def _check_row_sources(block, pending, side_sources, source):
+    """Hold a finished block to the record's row sources under XC-18.
+
+    The record's first block establishes the source of each side, and
+    every later row names the source of its side. The block's own
+    shape checks have already run, so this pass sees only rows the
+    Round 1 and Round 2 grammar admitted.
+    """
+    where = (
+        f"block for {block.name} of interface {block.interface} "
+        f"at line {pending['lineno']}"
+    )
+    for row in block.rows:
+        known = side_sources.get(row.side)
+        if known is None:
+            side_sources[row.side] = row.source
+        elif known != row.source:
+            raise RecordError(
+                f"{source} is malformed, {where} names source "
+                f"{row.source} on the {row.side}, which is not the "
+                f"{row.side} source of the record, {known}"
+            )
+    left = side_sources.get("left")
+    if left is not None and left == side_sources.get("right"):
+        raise RecordError(
+            f"{source} is malformed, {where} names the one source "
+            f"{left} on both sides"
+        )
 
 
 def _open_block(raw, source, lineno):
