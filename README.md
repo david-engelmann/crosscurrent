@@ -8,7 +8,7 @@ Worktree tools isolate agents well and do nothing about semantic drift, so every
 
 ## Status
 
-Round 2 built and in review. The staging model and the handback over recorded branch states are in place under contract obligations XC-1 to XC-17, reading the divergence records forkdrift emits and returning one sized reconciliation task per divergence to the two authors. Closed rounds 1 of 100. Part of the impatient programming portfolio, in the Fleet Operations arc.
+Round 2 landed in PR 4 and is recorded closed here. The staging model and the handback over recorded branch states are in place under contract obligations XC-1 to XC-17, reading the divergence records forkdrift emits and returning one sized reconciliation task per divergence to the two authors. Closed rounds 2 of 100. Part of the impatient programming portfolio, in the Fleet Operations arc.
 
 ## Licence
 
