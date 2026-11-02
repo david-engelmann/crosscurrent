@@ -17,10 +17,14 @@ EXCLUDED_RECORD = """divergence shard-store legacy-mode excluded-but-defined
   right (run-b.tape) legacy-mode = on
 """
 
+# The further row is labelled for the side its line comes from, as
+# forkdrift's FD-18 renders it and XC-18 holds every row to. An
+# earlier form of this fixture labelled that row right, which was
+# forkdrift's rendering before FD-18 corrected it.
 EXCLUDED_DUAL_RECORD = """divergence shard-store dual excluded-but-defined
   left (run-a.tape) dual = 1
   right (run-b.tape) excludes = dual
-  right (run-a.tape) operation dual = ack
+  left (run-a.tape) operation dual = ack
 """
 
 
@@ -350,5 +354,94 @@ def test_parses_a_mixed_record_with_all_four_kinds():
 def test_malformed_presence_blocks_are_refused_by_name(text, fragment):
     with pytest.raises(RecordError) as excinfo:
         parse_divergence_record(text, "record.txt")
+    assert fragment in str(excinfo.value)
+    assert "record.txt" in str(excinfo.value)
+
+
+def test_a_multi_block_record_with_further_and_excludes_rows_parses():
+    text = (
+        EXCLUDED_DUAL_RECORD + "\n" + PRESENCE_DUAL_LEFT_RECORD + "\n"
+        + TERM_RECORD + "\n" + RESULT_RECORD
+    )
+    found = parse_divergence_record(text, "record.txt")
+    assert [block.kind for block in found] == [
+        "excluded-but-defined",
+        "presence",
+        "term-value",
+        "result-type",
+    ]
+    excluded = found[0]
+    assert [row.line for row in excluded.definitions] == [
+        "dual = 1",
+        "operation dual = ack",
+    ]
+    assert {row.source for row in excluded.definitions} == {"run-a.tape"}
+    assert excluded.rows[2].side == "left"
+    assert excluded.excludes_row.source == "run-b.tape"
+    assert found[1].interface_row == found[1].rows[1]
+
+
+@pytest.mark.parametrize(
+    "text, name, fragment",
+    [
+        (
+            TERM_RECORD + "\n"
+            "divergence shard-store cache-ttl presence\n"
+            "  left (run-b.tape) cache-ttl = 300\n"
+            "  right (run-b.tape) interface shard-store\n",
+            "cache-ttl",
+            "not the left source of the record",
+        ),
+        (
+            TERM_RECORD + "\n"
+            "divergence shard-store cache-ttl presence\n"
+            "  left (run-a.tape) cache-ttl = 300\n"
+            "  right (run-a.tape) interface shard-store\n",
+            "cache-ttl",
+            "not the right source of the record",
+        ),
+        (
+            TERM_RECORD + "\n"
+            "divergence shard-store legacy-mode excluded-but-defined\n"
+            "  left (run-c.tape) excludes = legacy-mode\n"
+            "  right (run-b.tape) legacy-mode = on\n",
+            "legacy-mode",
+            "not the left source of the record",
+        ),
+        (
+            "divergence shard-store timeout term-value\n"
+            "  left (run-a.tape) timeout = 30\n"
+            "  right (run-a.tape) timeout = 45\n",
+            "timeout",
+            "names the one source run-a.tape on both sides",
+        ),
+        (
+            TERM_RECORD + "\n" + RESULT_RECORD + "\n"
+            "divergence shard-store retries term-value\n"
+            "  left (run-a.tape) retries = 3\n"
+            "  right (run-a.tape) retries = 4\n",
+            "retries",
+            "not the right source of the record",
+        ),
+        (
+            "divergence shard-store legacy-mode excluded-but-defined\n"
+            "  left (run-a.tape) excludes = legacy-mode\n"
+            "  left (run-b.tape) legacy-mode = on\n",
+            "legacy-mode",
+            "not the left source of the record",
+        ),
+        (
+            "divergence shard-store cache-ttl presence\n"
+            "  left (run-b.tape) cache-ttl = 300\n"
+            "  right (run-b.tape) interface shard-store\n",
+            "cache-ttl",
+            "names the one source run-b.tape on both sides",
+        ),
+    ],
+)
+def test_inconsistent_row_sources_are_refused_by_name(text, name, fragment):
+    with pytest.raises(RecordError) as excinfo:
+        parse_divergence_record(text, "record.txt")
+    assert name in str(excinfo.value)
     assert fragment in str(excinfo.value)
     assert "record.txt" in str(excinfo.value)

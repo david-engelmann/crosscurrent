@@ -46,10 +46,14 @@ EXCLUDED_OPERATION_RECORD = """divergence shard-store sweeper excluded-but-defin
   right (run-b.tape) operation sweeper = report
 """
 
+# The further row is labelled for the side its line comes from, as
+# forkdrift's FD-18 renders it and XC-18 holds every row to. An
+# earlier form of this fixture labelled that row right, which was
+# forkdrift's rendering before FD-18 corrected it.
 EXCLUDED_DUAL_RECORD = """divergence shard-store dual excluded-but-defined
   left (run-a.tape) dual = 1
   right (run-b.tape) excludes = dual
-  right (run-a.tape) operation dual = ack
+  left (run-a.tape) operation dual = ack
 """
 
 
