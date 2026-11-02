@@ -1,0 +1,6 @@
+divergence shard-store store result-type
+  left (examples/presence-run-a.tape) operation store = ack
+  right (examples/presence-run-b.tape) operation store = receipt
+divergence shard-store timeout term-value
+  left (examples/presence-run-a.tape) timeout = 30
+  right (examples/presence-run-b.tape) timeout = 45

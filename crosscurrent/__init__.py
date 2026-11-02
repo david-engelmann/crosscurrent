@@ -7,10 +7,16 @@ from .errors import (
     StateError,
     TaskError,
 )
-from .records import Divergence, QuotedLine, parse_divergence_record
+from .records import (
+    Divergence,
+    QuotedLine,
+    bundle_divergences,
+    parse_divergence_record,
+    record_sources,
+)
 from .staging import CrossApply, cross_apply, format_stage_report
 from .states import BranchState, Statement, parse_branch_state
-from .tasks import Task, build_tasks, format_tasks
+from .tasks import Task, build_tasks, build_tasks_bundle, format_tasks
 
 __all__ = [
     "BranchState",
@@ -25,9 +31,12 @@ __all__ = [
     "Task",
     "TaskError",
     "build_tasks",
+    "build_tasks_bundle",
+    "bundle_divergences",
     "cross_apply",
     "format_stage_report",
     "format_tasks",
     "parse_branch_state",
     "parse_divergence_record",
+    "record_sources",
 ]

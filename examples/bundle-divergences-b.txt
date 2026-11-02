@@ -1,0 +1,6 @@
+divergence shard-store cache-ttl presence
+  left (examples/presence-run-a.tape) cache-ttl = 300
+  right (examples/presence-run-b.tape) interface shard-store
+divergence shard-store timeout term-value
+  left (examples/presence-run-a.tape) timeout = 30
+  right (examples/presence-run-b.tape) timeout = 45

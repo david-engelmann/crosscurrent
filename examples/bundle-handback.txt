@@ -1,0 +1,25 @@
+task shard-store cache-ttl
+authors engineer-a engineer-b
+kind presence
+  left (examples/presence-run-a.tape) cache-ttl = 300
+  right (examples/presence-run-b.tape) interface shard-store
+size small score 1
+factors definitions 1, result-type no, breaking no
+staging clean 2, conflicting 1, one-sided 2, missing 0
+task shard-store store
+authors engineer-a engineer-b
+kind result-type
+  left (examples/presence-run-a.tape) operation store = ack
+  right (examples/presence-run-b.tape) operation store = receipt
+size large score 7
+factors definitions 2, result-type yes, breaking yes
+staging clean 2, conflicting 1, one-sided 2, missing 0
+task shard-store timeout
+authors engineer-a engineer-b
+kind term-value
+  left (examples/presence-run-a.tape) timeout = 30
+  right (examples/presence-run-b.tape) timeout = 45
+size small score 2
+factors definitions 2, result-type no, breaking no
+note the staging cross-apply classifies this name clean and this task follows the record
+staging clean 2, conflicting 1, one-sided 2, missing 0
