@@ -59,3 +59,5 @@ This repo is crosscurrent. Its contract lives in CONTRACT.md and that file is th
 Boundary. Crosscurrent reconciles the pairs forkdrift catches. Forkdrift, also owned by this chat, detects divergence across the whole fleet, and crosscurrent never takes over detection of the fleet at large.
 
 First slice. A staging branch that cross-applies two live branches and hands one detected divergence back to its two authors as a sized reconciliation task while both are still live.
+
+Identity exception. The maintainer identity in the required Signed-off-by trailer is the repo owner's public sign-off identity. It is permitted in commit metadata and in that instruction, and the sanitization rule does not apply to it.

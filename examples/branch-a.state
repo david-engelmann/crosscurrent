@@ -1,0 +1,8 @@
+# synthetic recorded branch state from author engineer-a, written for this repo
+interface shard-store
+author engineer-a
+
+replicas = 3
+timeout = 30
+operation store = ack
+cache-ttl = 300

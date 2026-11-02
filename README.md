@@ -8,7 +8,7 @@ Worktree tools isolate agents well and do nothing about semantic drift, so every
 
 ## Status
 
-Setup slice in progress. The build has not started. Closed rounds 0 of 100. The contract is a stub and is not yet met. Part of the impatient programming portfolio, in the Fleet Operations arc.
+Round 1 built and in review. The staging model and the handback over recorded branch states are in place under contract obligations XC-1 to XC-13, reading the divergence records forkdrift emits and returning one sized reconciliation task per divergence to the two authors. Closed rounds 0 of 100. Part of the impatient programming portfolio, in the Fleet Operations arc.
 
 ## Licence
 
