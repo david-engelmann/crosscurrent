@@ -1,0 +1,8 @@
+# synthetic recorded branch state from author engineer-b, written for this repo
+interface shard-store
+author engineer-b
+
+replicas = 3
+timeout = 30
+operation store = receipt
+legacy-mode = on

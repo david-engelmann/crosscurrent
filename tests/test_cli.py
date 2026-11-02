@@ -130,6 +130,47 @@ def test_cli_interface_mismatch_exits_2(tmp_path):
     assert "Traceback" not in result.stderr
 
 
+PRESENCE_RECORD = """divergence shard-store cache-ttl presence
+  left (run-a.tape) cache-ttl = 300
+  right (run-b.tape) interface shard-store
+"""
+
+EXPECTED_PRESENCE_HANDBACK = (
+    "task shard-store cache-ttl\n"
+    "authors engineer-a engineer-b\n"
+    "kind presence\n"
+    "  left (run-a.tape) cache-ttl = 300\n"
+    "  right (run-b.tape) interface shard-store\n"
+    "size small score 1\n"
+    "factors definitions 1, result-type no, breaking no\n"
+    "staging clean 1, conflicting 1, one-sided 0, missing 1\n"
+)
+
+MISLABELLED_PRESENCE_RECORD = """divergence shard-store dual presence
+  left (run-a.tape) dual = 1
+  right (run-b.tape) interface shard-store
+  right (run-a.tape) operation dual = ack
+"""
+
+
+def test_cli_handback_over_a_presence_only_record(tmp_path):
+    left, right, record = session(tmp_path, record=PRESENCE_RECORD)
+    result = run_cli("handback", left, right, record)
+    assert result.returncode == 0
+    assert result.stdout == EXPECTED_PRESENCE_HANDBACK
+    assert result.stderr == ""
+
+
+def test_cli_mislabelled_presence_record_exits_2_without_traceback(tmp_path):
+    left, right, record = session(tmp_path, record=MISLABELLED_PRESENCE_RECORD)
+    result = run_cli("handback", left, right, record)
+    assert result.returncode == 2
+    assert result.stderr.startswith("error:")
+    assert "not the right source" in result.stderr
+    assert "Traceback" not in result.stderr
+    assert result.stdout == ""
+
+
 def test_cli_output_ignores_unrelated_files_beside_the_inputs(tmp_path):
     left, right, record = session(tmp_path)
     baseline = run_cli("handback", left, right, record, cwd=tmp_path)
