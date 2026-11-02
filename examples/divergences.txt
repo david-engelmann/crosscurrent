@@ -1,0 +1,3 @@
+divergence shard-store store result-type
+  left (examples/branch-a.state) operation store = ack
+  right (examples/branch-b.state) operation store = receipt

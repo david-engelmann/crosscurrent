@@ -1,0 +1,8 @@
+task shard-store store
+authors engineer-a engineer-b
+kind result-type
+  left (examples/branch-a.state) operation store = ack
+  right (examples/branch-b.state) operation store = receipt
+size large score 7
+factors definitions 2, result-type yes, breaking yes
+staging clean 2, conflicting 1, one-sided 1, missing 0
