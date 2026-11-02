@@ -5,7 +5,9 @@ recorded to a file. Each block names one interface, one diverged
 name, and one divergence kind, and quotes the defining lines with
 the source each line came from. A presence block also quotes the
 interface line of the side that defines nothing for the name, and
-that row is not a definition.
+that row is not a definition. The bundle helpers after the parser
+state what several records over the one pair of sources mean for
+a single session, under XC-19 and XC-20.
 """
 
 import re
@@ -94,6 +96,68 @@ def parse_divergence_record(text, source):
             )
         seen.add(key)
     return tuple(blocks)
+
+
+def record_sources(divergences):
+    """The left and right sources the rows of one record establish.
+
+    Under XC-18 every row of a side names the one source of that
+    side, so the first row of each side speaks for the record. A
+    record carrying no divergence establishes no sources and
+    returns None.
+    """
+    left = None
+    right = None
+    for divergence in divergences:
+        for row in divergence.rows:
+            if row.side == "left" and left is None:
+                left = row.source
+            elif row.side == "right" and right is None:
+                right = row.source
+    if left is None and right is None:
+        return None
+    return (left, right)
+
+
+def bundle_divergences(records):
+    """Union the divergences of a bundle of records under XC-19 and XC-20.
+
+    The argument is a sequence of pairs, each pairing a record name
+    with the divergences parse_divergence_record returned for that
+    record. Every record that carries a divergence must establish
+    the same left source and the same right source, and a record
+    that establishes different sources refuses the bundle. An exact
+    duplicate of a divergence, identified by its interface and its
+    name and its kind and its quoted rows, enters the union once.
+    """
+    established = None
+    union = []
+    seen = set()
+    for name, divergences in records:
+        sources = record_sources(divergences)
+        if sources is not None:
+            if established is None:
+                established = (sources, name)
+            elif sources != established[0]:
+                known, known_name = established
+                raise RecordError(
+                    f"{name} establishes left {sources[0]} and "
+                    f"right {sources[1]} and {known_name} "
+                    f"establishes left {known[0]} and right "
+                    f"{known[1]}, and the records of one bundle "
+                    "must establish the one pair of sources"
+                )
+        for divergence in divergences:
+            key = (
+                divergence.interface,
+                divergence.name,
+                divergence.kind,
+                divergence.rows,
+            )
+            if key not in seen:
+                seen.add(key)
+                union.append(divergence)
+    return tuple(union)
 
 
 def _check_row_sources(block, pending, side_sources, source):

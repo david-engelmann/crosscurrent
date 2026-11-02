@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from .errors import TaskError
-from .records import RESULT_TYPE
+from .records import RESULT_TYPE, bundle_divergences
 from .staging import check_session_interface
 from .states import parse_statement_form
 
@@ -36,6 +36,13 @@ def _band(score):
     return "large"
 
 
+def _printed_rows(divergence):
+    """The quoted rows of a divergence in the form the handback prints."""
+    return tuple(
+        f"  {row.side} ({row.source}) {row.line}" for row in divergence.rows
+    )
+
+
 def build_tasks(left, right, divergences, staging):
     """Build one sized task per divergence, in handback order."""
     check_session_interface(left, right, divergences)
@@ -48,8 +55,25 @@ def build_tasks(left, right, divergences, staging):
             "a reconciliation task cannot be stated, the staging "
             "summary belongs to a different session"
         )
-    ordered = sorted(divergences, key=lambda d: (d.interface, d.name, d.kind))
+    ordered = sorted(
+        divergences,
+        key=lambda d: (d.interface, d.name, d.kind, _printed_rows(d)),
+    )
     return tuple(_build_task(left, right, d, staging) for d in ordered)
+
+
+def build_tasks_bundle(left, right, records, staging):
+    """Build the tasks of a bundle handback under XC-19 to XC-21.
+
+    The records argument pairs each record name with the
+    divergences parsed from that record. The tasks are built from
+    the union of the bundle exactly as build_tasks builds them
+    from one record, so a bundle of one record states the same
+    tasks as that record on its own.
+    """
+    return build_tasks(
+        left, right, bundle_divergences(records), staging
+    )
 
 
 def _build_task(left, right, divergence, staging):
