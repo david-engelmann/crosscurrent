@@ -214,6 +214,139 @@ def test_task_notes_a_name_the_staging_calls_clean():
     assert "note the staging cross-apply classifies this name clean" in text
 
 
+PRESENCE_TERM_RECORD = """divergence shard-store cache-ttl presence
+  left (run-a.tape) cache-ttl = 300
+  right (run-b.tape) interface shard-store
+"""
+
+PRESENCE_OPERATION_RECORD = """divergence shard-store purge presence
+  left (run-a.tape) operation purge = ack
+  right (run-b.tape) interface shard-store
+"""
+
+PRESENCE_DUAL_RECORD = """divergence shard-store dual presence
+  left (run-a.tape) dual = 1
+  right (run-b.tape) interface shard-store
+  left (run-a.tape) operation dual = ack
+"""
+
+PRESENCE_CROSS_RECORD = """divergence shard-store fetch presence
+  left (run-a.tape) fetch = cached
+  right (run-b.tape) operation fetch = record
+"""
+
+
+def test_a_presence_task_counts_only_its_defining_lines():
+    task = only_task(PRESENCE_TERM_RECORD)
+    assert task.kind == "presence"
+    assert (task.definitions, task.result_type, task.breaking) == (1, False, False)
+    assert (task.score, task.band) == (1, "small")
+    text = format_tasks((task,))
+    assert "kind presence" in text
+    assert "  left (run-a.tape) cache-ttl = 300" in text
+    assert "  right (run-b.tape) interface shard-store" in text
+    assert "factors definitions 1, result-type no, breaking no" in text
+
+
+def test_presence_sizing_follows_the_contract_enumeration():
+    task = only_task(PRESENCE_OPERATION_RECORD)
+    assert (task.definitions, task.result_type) == (1, True)
+    assert (task.score, task.band) == (3, "medium")
+
+    task = only_task(PRESENCE_DUAL_RECORD)
+    assert (task.definitions, task.result_type) == (2, True)
+    assert (task.score, task.band) == (4, "medium")
+
+    task = only_task(PRESENCE_CROSS_RECORD)
+    assert (task.definitions, task.result_type) == (2, True)
+    assert (task.score, task.band) == (4, "medium")
+
+
+def test_a_presence_task_prints_every_quoted_row():
+    task = only_task(PRESENCE_DUAL_RECORD)
+    text = format_tasks((task,))
+    rows = [
+        "  left (run-a.tape) dual = 1",
+        "  right (run-b.tape) interface shard-store",
+        "  left (run-a.tape) operation dual = ack",
+    ]
+    positions = [text.index(row) for row in rows]
+    assert positions == sorted(positions)
+
+
+def test_a_presence_task_breaking_factor_reads_the_states():
+    left_breaking = LEFT.replace(
+        "operation store = ack",
+        "operation store = ack\ncache-ttl = 300\nbreaking cache-ttl",
+    )
+    task = only_task(PRESENCE_TERM_RECORD, left_text=left_breaking)
+    assert task.breaking is True
+    assert (task.score, task.band) == (4, "medium")
+
+
+def test_a_presence_name_staging_calls_one_sided_carries_no_note():
+    left_one = LEFT.replace(
+        "operation store = ack", "operation store = ack\ncache-ttl = 300"
+    )
+    task = only_task(PRESENCE_TERM_RECORD, left_text=left_one)
+    assert task.note is None
+    text = format_tasks((task,))
+    assert "staging clean 1, conflicting 2, one-sided 1, missing 0" in text
+    assert "note " not in text
+
+
+def test_a_presence_name_one_sided_on_the_other_side_still_carries_no_note():
+    right_one = RIGHT.replace(
+        "operation store = receipt", "operation store = receipt\ncache-ttl = 300"
+    )
+    task = only_task(PRESENCE_TERM_RECORD, right_text=right_one)
+    assert task.note is None
+    assert "note " not in format_tasks((task,))
+
+
+def test_a_presence_name_staging_calls_conflicting_carries_no_note():
+    left_one = LEFT.replace(
+        "operation store = ack", "operation store = ack\ncache-ttl = 300"
+    )
+    right_one = RIGHT.replace(
+        "operation store = receipt", "operation store = receipt\ncache-ttl = 600"
+    )
+    task = only_task(
+        PRESENCE_TERM_RECORD, left_text=left_one, right_text=right_one
+    )
+    assert task.note is None
+    text = format_tasks((task,))
+    assert "staging clean 1, conflicting 3, one-sided 0, missing 0" in text
+    assert "note " not in text
+
+
+def test_a_presence_name_staging_calls_clean_carries_the_disagreement_note():
+    left_one = LEFT.replace(
+        "operation store = ack", "operation store = ack\ncache-ttl = 300"
+    )
+    right_one = RIGHT.replace(
+        "operation store = receipt", "operation store = receipt\ncache-ttl = 300"
+    )
+    task = only_task(
+        PRESENCE_TERM_RECORD, left_text=left_one, right_text=right_one
+    )
+    assert task.note is not None
+    text = format_tasks((task,))
+    assert "staging clean 2, conflicting 2, one-sided 0, missing 0" in text
+    assert (
+        "note the staging cross-apply classifies this name clean "
+        "and this task follows the record" in text
+    )
+
+
+def test_a_presence_name_staging_calls_missing_carries_no_note():
+    task = only_task(PRESENCE_TERM_RECORD)
+    assert task.note is None
+    text = format_tasks((task,))
+    assert "staging clean 1, conflicting 2, one-sided 0, missing 1" in text
+    assert "note " not in text
+
+
 def test_build_tasks_refuses_a_staging_summary_from_another_session():
     left = parse_branch_state(LEFT, "left.state")
     right = parse_branch_state(RIGHT, "right.state")

@@ -3,7 +3,9 @@
 A divergence record is the report forkdrift's comparison prints,
 recorded to a file. Each block names one interface, one diverged
 name, and one divergence kind, and quotes the defining lines with
-the source each line came from.
+the source each line came from. A presence block also quotes the
+interface line of the side that defines nothing for the name, and
+that row is not a definition.
 """
 
 import re
@@ -15,7 +17,8 @@ from .states import IDENTIFIER, parse_statement_form
 TERM_VALUE = "term-value"
 RESULT_TYPE = "result-type"
 EXCLUDED_BUT_DEFINED = "excluded-but-defined"
-KINDS = (TERM_VALUE, RESULT_TYPE, EXCLUDED_BUT_DEFINED)
+PRESENCE = "presence"
+KINDS = (TERM_VALUE, RESULT_TYPE, EXCLUDED_BUT_DEFINED, PRESENCE)
 
 ROW = re.compile(r"^  (left|right) \((.+?)\) (.+)$")
 
@@ -34,15 +37,16 @@ class Divergence:
     kind: str
     rows: tuple
     excludes_row: object = None
+    interface_row: object = None
 
     @property
     def definitions(self):
         """The defining lines among the quoted rows, derived never stored."""
-        if self.kind == EXCLUDED_BUT_DEFINED:
-            return tuple(
-                row for row in self.rows if row != self.excludes_row
-            )
-        return tuple(self.rows)
+        return tuple(
+            row
+            for row in self.rows
+            if row != self.excludes_row and row != self.interface_row
+        )
 
 
 def parse_divergence_record(text, source):
@@ -134,6 +138,8 @@ def _finish_block(pending, source):
                     f"that is not a {want} line for {name}, {row.line}"
                 )
         return Divergence(interface, name, kind, tuple(rows))
+    if kind == PRESENCE:
+        return _finish_presence_block(pending, rows, source)
     excludes_rows = []
     define_rows = []
     for row in rows:
@@ -177,4 +183,83 @@ def _finish_block(pending, source):
         )
     return Divergence(
         interface, name, kind, tuple(rows), excludes_rows[0]
+    )
+
+
+def _finish_presence_block(pending, rows, source):
+    interface = pending["interface"]
+    name = pending["name"]
+    where = f"block for {name} at line {pending['lineno']}"
+    if len(rows) not in (2, 3):
+        raise RecordError(
+            f"{source} is malformed, {where} must quote one left "
+            "row and one right row and at most one further row"
+        )
+    if [row.side for row in rows[:2]] != ["left", "right"]:
+        raise RecordError(
+            f"{source} is malformed, {where} must quote one "
+            "left line and one right line"
+        )
+    interface_line = f"interface {interface}"
+    side_sources = {row.side: row.source for row in rows[:2]}
+    defining = {"left": [], "right": []}
+    interface_row = None
+    for position, row in enumerate(rows):
+        if position == 2 and row.source != side_sources[row.side]:
+            raise RecordError(
+                f"{source} is malformed, {where} labels its further "
+                f"row {row.side} but names source {row.source}, "
+                f"which is not the {row.side} source"
+            )
+        if row.line == interface_line:
+            if position == 2:
+                raise RecordError(
+                    f"{source} is malformed, {where} quotes the "
+                    "interface line as its further row, and a "
+                    f"further row quotes a defining line for {name}"
+                )
+            interface_row = row
+            continue
+        form = parse_statement_form(row.line)
+        if (
+            form is None
+            or form[0] not in ("term", "operation")
+            or form[1] != name
+        ):
+            raise RecordError(
+                f"{source} is malformed, {where} quotes a line "
+                f"that is neither a defining line for {name} nor "
+                f"the interface line, {row.line}"
+            )
+        defining[row.side].append(form[0])
+    for side in ("left", "right"):
+        forms = defining[side]
+        side_row = rows[0] if side == "left" else rows[1]
+        if side_row.line == interface_line and forms:
+            raise RecordError(
+                f"{source} is malformed, {where} quotes the "
+                f"interface line on the {side} and a defining "
+                f"line for {name} from the {side} as well"
+            )
+        if len(forms) == 2 and forms != ["term", "operation"]:
+            raise RecordError(
+                f"{source} is malformed, {where} quotes defining "
+                f"lines for {name} from the {side} that are not a "
+                "term line then an operation line"
+            )
+    shared = set(defining["left"]) & set(defining["right"])
+    if shared:
+        raise RecordError(
+            f"{source} is malformed, {where} quotes a "
+            f"{sorted(shared)[0]} line for {name} from both sides, "
+            "and a presence block quotes each form from one "
+            "side only"
+        )
+    if not defining["left"] and not defining["right"]:
+        raise RecordError(
+            f"{source} is malformed, {where} quotes no defining "
+            f"line for {name}"
+        )
+    return Divergence(
+        interface, name, PRESENCE, tuple(rows), None, interface_row
     )

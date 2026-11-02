@@ -99,6 +99,30 @@ def test_a_diverged_name_defined_nowhere_is_reported_missing():
     assert all(name != "ghost" for name, _ in result.one_sided)
 
 
+def test_a_presence_name_defined_nowhere_is_reported_missing():
+    record = (
+        "divergence shard-store ghost presence\n"
+        "  left (run-a.tape) ghost = 1\n"
+        "  right (run-b.tape) interface shard-store\n"
+    )
+    result = stage(record_text=record)
+    assert result.missing == ("ghost",)
+    assert "ghost" not in result.clean
+    assert "ghost" not in result.conflicting
+    assert all(name != "ghost" for name, _ in result.one_sided)
+
+
+def test_a_presence_name_defined_on_one_side_is_one_sided():
+    record = (
+        "divergence shard-store cache-ttl presence\n"
+        "  left (run-a.tape) cache-ttl = 300\n"
+        "  right (run-b.tape) interface shard-store\n"
+    )
+    result = stage(record_text=record)
+    assert ("cache-ttl", "left") in result.one_sided
+    assert result.missing == ()
+
+
 def test_a_diverged_name_defined_in_the_states_is_not_missing():
     record = (
         "divergence shard-store timeout term-value\n"
