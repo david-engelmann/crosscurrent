@@ -99,6 +99,40 @@ fn big_document_to_both_dead_streams_exits_120() {
     assert_eq!(result.stderr, Vec::<u8>::new());
 }
 
+/// A handback document of exactly 8192 bytes stands on the
+/// at the boundary reading of XC-29, not the under it
+/// reading. The one divergence pads its name to carry the
+/// length, the name standing in three printed lines, and
+/// pads its right value with zeros for the remainder.
+#[test]
+fn document_of_exactly_8192_bytes_to_a_dead_stdout_exits_2_with_the_broken_pipe_line() {
+    let record_with = |padding: usize, zeros: usize| {
+        let name = format!("term-{}", "x".repeat(padding));
+        format!(
+            "divergence shard-store {name} term-value\n  left (run-a.tape) {name} = 1\n  right (run-b.tape) {name} = 2{}\n",
+            "0".repeat(zeros)
+        )
+    };
+    let dir = temp_dir("of-exact");
+    let (left, right, record) = session(&dir, &record_with(0, 0));
+    let control = run_cli(&["handback", &left, &right, &record], &dir);
+    assert_eq!(control.code, 0);
+    let deficit = 8192 - control.stdout.len();
+    let (left, right, record) = session(&dir, &record_with(deficit / 3, deficit % 3));
+    let control = run_cli(&["handback", &left, &right, &record], &dir);
+    assert_eq!(control.code, 0);
+    assert_eq!(
+        control.stdout.len(),
+        8192,
+        "the tuned document must land on the boundary itself"
+    );
+    let dead = run_cli_on_closed_stdout(&["handback", &left, &right, &record], &dir);
+    assert_eq!(dead.code, 2);
+    assert_eq!(dead.stderr, BROKEN_PIPE_LINE);
+    let both = run_cli_on_closed_streams(&["handback", &left, &right, &record], &dir);
+    assert_eq!(both.code, 120);
+}
+
 #[test]
 fn refusal_to_a_dead_stderr_exits_120() {
     let dir = temp_dir("of-refusal-err");

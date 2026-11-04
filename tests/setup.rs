@@ -83,24 +83,40 @@ fn agents_canonical_block_present() {
 #[test]
 fn readme_status_reports_rounds() {
     let text = read_repo("README.md");
-    let mut counts: Vec<String> = Vec::new();
-    let mut search = text.as_str();
-    while let Some(at) = search.find("Closed rounds ") {
-        let rest = &search[at + "Closed rounds ".len()..];
-        let digits: String = rest.chars().take_while(char::is_ascii_digit).collect();
-        let after = &rest[digits.len()..];
-        if !digits.is_empty()
-            && after.starts_with(" of 100")
-            && !after[" of 100".len()..].starts_with(|c: char| c.is_ascii_digit())
-        {
-            counts.push(digits);
+    let count_in = |text: &str| {
+        let mut counts: Vec<String> = Vec::new();
+        let mut search = text;
+        while let Some(at) = search.find("Closed rounds ") {
+            let rest = &search[at + "Closed rounds ".len()..];
+            let digits: String = rest.chars().take_while(char::is_ascii_digit).collect();
+            let after = &rest[digits.len()..];
+            if !digits.is_empty()
+                && after.starts_with(" of 100")
+                && !after[" of 100".len()..].starts_with(|c: char| c.is_ascii_digit())
+            {
+                counts.push(digits);
+            }
+            search = &search[at + 1..];
         }
-        search = &search[at + 1..];
-    }
+        counts
+    };
     assert_eq!(
-        counts,
+        count_in(&text),
         ["4"],
         "README status must report exactly one closed round count and it must be 4"
+    );
+    let status_at = text
+        .find("## Status")
+        .expect("README carries a Status section");
+    let status = &text[status_at..];
+    let status = match status[1..].find("\n## ") {
+        Some(end) => &status[..end + 1],
+        None => status,
+    };
+    assert_eq!(
+        count_in(status),
+        ["4"],
+        "the closed round count must stand in the Status section itself"
     );
 }
 
@@ -131,12 +147,12 @@ fn manifest_dependency_sets(text: &str) -> (BTreeSet<String>, BTreeSet<String>) 
                 } else {
                     None
                 };
-                if let Some(target) = dotted {
-                    if let Some(name) = segments.get(index + 1) {
-                        let name = name.trim_matches('"');
-                        if !name.is_empty() {
-                            target.insert(name.to_string());
-                        }
+                if let Some(target) = dotted
+                    && let Some(name) = segments.get(index + 1)
+                {
+                    let name = name.trim_matches('"');
+                    if !name.is_empty() {
+                        target.insert(name.to_string());
                     }
                 }
             }

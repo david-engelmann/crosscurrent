@@ -103,11 +103,14 @@ fn match_row(raw: &str) -> Option<(String, String, String)> {
     let mut index = 0usize;
     let mut source_end: Option<usize> = None;
     while index < bytes.len() {
-        if bytes[index] == b')' && index + 1 < bytes.len() && bytes[index + 1] == b' ' {
-            if index >= 1 && index + 2 < bytes.len() {
-                source_end = Some(index);
-                break;
-            }
+        if bytes[index] == b')'
+            && index + 1 < bytes.len()
+            && bytes[index + 1] == b' '
+            && index >= 1
+            && index + 2 < bytes.len()
+        {
+            source_end = Some(index);
+            break;
         }
         index += 1;
         while index < bytes.len() && (bytes[index] & 0xC0) == 0x80 {
@@ -228,6 +231,10 @@ fn source_text(side: &Option<String>) -> String {
     side.clone().unwrap_or_else(|| "None".to_string())
 }
 
+/// The two side sources one record names, either of which
+/// the record may leave unnamed.
+type SideSources = (Option<String>, Option<String>);
+
 /// Union the divergences of a bundle of records under
 /// XC-19 and XC-20.
 ///
@@ -242,7 +249,7 @@ fn source_text(side: &Option<String>) -> String {
 pub fn bundle_divergences(
     records: &[(String, Vec<Divergence>)],
 ) -> Result<Vec<Divergence>, CrosscurrentError> {
-    let mut established: Option<((Option<String>, Option<String>), &str)> = None;
+    let mut established: Option<(SideSources, &str)> = None;
     let mut union: Vec<Divergence> = Vec::new();
     let mut seen: HashSet<(String, String, String, Vec<QuotedLine>)> = HashSet::new();
     for (name, divergences) in records {
@@ -318,14 +325,14 @@ fn check_row_sources(
             }
         }
     }
-    if let Some(left) = side_sources.get("left") {
-        if side_sources.get("right") == Some(left) {
-            return Err(RecordError::new(format!(
-                "{source} is malformed, {where_} names the one source \
-                 {left} on both sides"
-            ))
-            .into());
-        }
+    if let Some(left) = side_sources.get("left")
+        && side_sources.get("right") == Some(left)
+    {
+        return Err(RecordError::new(format!(
+            "{source} is malformed, {where_} names the one source \
+             {left} on both sides"
+        ))
+        .into());
     }
     Ok(())
 }

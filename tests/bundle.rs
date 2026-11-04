@@ -8,7 +8,7 @@
 mod common;
 
 use common::{record, run_cli, run_cli_at_root, state, temp_dir, write};
-use crosscurrent::records::{bundle_divergences, record_sources};
+use crosscurrent::records::{Divergence, QuotedLine, bundle_divergences, record_sources};
 use crosscurrent::tasks::build_tasks_bundle;
 use crosscurrent::{CrosscurrentError, Task, build_tasks, cross_apply, format_tasks};
 
@@ -329,4 +329,56 @@ fn identity_differing_only_in_the_interface_row_does_not_collapse() {
     assert_eq!(found.len(), 2, "{}", format_tasks(&found));
     let same = bundle_tasks(&[left_defines, left_defines]);
     assert_eq!(same.len(), 1);
+}
+
+/// The pure form of the pin above, built from divergence
+/// values so nothing but the interface row's quoted text
+/// differs. The two blocks name the same interface, term,
+/// and kind, quote the same defining row, and carry their
+/// interface row on the same side from the same source.
+/// Only the line the interface row quotes differs, so an
+/// identity that left the interface row out of the quoted
+/// rows would collapse them, and the union must keep both.
+#[test]
+fn identity_differing_only_in_the_interface_rows_quoted_text_does_not_collapse() {
+    let row = |side: &str, source: &str, line: &str| QuotedLine {
+        side: side.to_string(),
+        source: source.to_string(),
+        line: line.to_string(),
+    };
+    let presence = |interface_line: &str| Divergence {
+        interface: "shard-store".to_string(),
+        name: "dual".to_string(),
+        kind: "presence".to_string(),
+        rows: vec![
+            row("left", "run-a.tape", "dual = 1"),
+            row("right", "run-b.tape", interface_line),
+        ],
+        excludes_row: None,
+        interface_row: Some(row("right", "run-b.tape", interface_line)),
+    };
+    let records = vec![
+        (
+            "one.txt".to_string(),
+            vec![presence("interface shard-store")],
+        ),
+        (
+            "two.txt".to_string(),
+            vec![presence("interface shard-cache")],
+        ),
+    ];
+    let union = bundle_divergences(&records).expect("bundle unions");
+    assert_eq!(union.len(), 2);
+    let same = vec![
+        (
+            "one.txt".to_string(),
+            vec![presence("interface shard-store")],
+        ),
+        (
+            "two.txt".to_string(),
+            vec![presence("interface shard-store")],
+        ),
+    ];
+    let union = bundle_divergences(&same).expect("bundle unions");
+    assert_eq!(union.len(), 1);
 }

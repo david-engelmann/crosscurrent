@@ -77,12 +77,17 @@ impl NumberKey {
 }
 
 /// The digit worth of a character in the runtime's decimal
-/// digit set, or None when the character is not one.
+/// digit set, or None when the character is not one. Every
+/// range opens at the zero of its own alphabet, and the one
+/// span that carries several alphabets in a row, the
+/// mathematical alphanumeric digits, repeats the worths
+/// zero to nine once per alphabet, so the worth is the
+/// offset inside the range taken ten at a time.
 fn digit_value(c: char) -> Option<u8> {
     let point = c as u32;
     for &(low, high) in pytext::DECIMAL_RANGES {
         if point >= low && point <= high {
-            return Some((point - low) as u8);
+            return Some(((point - low) % 10) as u8);
         }
     }
     None

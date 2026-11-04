@@ -158,6 +158,29 @@ impl std::fmt::Display for FailedFlush {
 
 impl std::error::Error for FailedFlush {}
 
+/// A value slot the separator distribution filled with a
+/// list in place of a path.
+///
+/// The Python tool meets the list as an uncaught error of
+/// its own when the read of that slot is reached. The port
+/// carries the shape in its own type and answers it in its
+/// own voice at the oracle's status, with the one line
+/// discipline of XC-12 standing in for the traceback.
+#[derive(Debug)]
+struct Uncaught(String);
+
+impl std::fmt::Display for Uncaught {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "crosscurrent could not finish the reconciliation, {}",
+            self.0
+        )
+    }
+}
+
+impl std::error::Error for Uncaught {}
+
 /// The size of the buffer the Python tool holds its printed
 /// output in, in bytes. A printed output of this size or
 /// more is written through as it is printed, so a failure
@@ -321,7 +344,17 @@ fn cmd_stage(args: &StageArgs) -> anyhow::Result<i32> {
     let left = read_state(&args.left)?;
     let right = read_state(&args.right)?;
     let (_, divergences) = read_record(&args.divergences)?;
-    let staging = cross_apply(&left, &right, &divergences)?;
+    finish_stage(&left, &right, &divergences)
+}
+
+/// Cross-apply the two branch states over the divergences
+/// and print the staging report.
+fn finish_stage(
+    left: &BranchState,
+    right: &BranchState,
+    divergences: &[Divergence],
+) -> anyhow::Result<i32> {
+    let staging = cross_apply(left, right, divergences)?;
     print_out(format_stage_report(&staging).as_bytes())?;
     Ok(0)
 }
@@ -333,11 +366,69 @@ fn cmd_handback(args: &HandbackArgs) -> anyhow::Result<i32> {
     for path in &args.divergences {
         records.push(read_record(path)?);
     }
-    let divergences = bundle_divergences(&records)?;
-    let staging = cross_apply(&left, &right, &divergences)?;
-    let tasks = build_tasks(&left, &right, &divergences, &staging)?;
+    finish_handback(&left, &right, &records)
+}
+
+/// Bundle the records, cross-apply the two branch states
+/// over the union, build the tasks, and print the handback
+/// document.
+fn finish_handback(
+    left: &BranchState,
+    right: &BranchState,
+    records: &[(String, Vec<Divergence>)],
+) -> anyhow::Result<i32> {
+    let divergences = bundle_divergences(records)?;
+    let staging = cross_apply(left, right, &divergences)?;
+    let tasks = build_tasks(left, right, &divergences, &staging)?;
     print_out(format_tasks(&tasks).as_bytes())?;
     Ok(0)
+}
+
+/// The path a distributed slot hands to its read, or the
+/// uncaught answer when the slot received a list in place
+/// of a path.
+fn slot_path(slot: &Slot) -> anyhow::Result<PathBuf> {
+    match slot {
+        Slot::One(path) => Ok(PathBuf::from(path)),
+        Slot::Listed(name) => Err(anyhow::Error::new(Uncaught(format!(
+            "{name} was given as a list"
+        )))),
+    }
+}
+
+/// Run a command whose arguments the separator distribution
+/// assigned, without clap.
+///
+/// The slots resolve in read order, so a list in one slot
+/// is met only when the read of that slot is reached, after
+/// the slots before it have read and parsed under their
+/// standing refusals.
+fn cmd_assigned(assigned: &Assigned) -> anyhow::Result<i32> {
+    match assigned {
+        Assigned::Stage {
+            left,
+            right,
+            record,
+        } => {
+            let left = read_state(&slot_path(left)?)?;
+            let right = read_state(&slot_path(right)?)?;
+            let (_, divergences) = read_record(&slot_path(record)?)?;
+            finish_stage(&left, &right, &divergences)
+        }
+        Assigned::Handback {
+            left,
+            right,
+            records,
+        } => {
+            let left = read_state(&slot_path(left)?)?;
+            let right = read_state(&slot_path(right)?)?;
+            let mut named = Vec::new();
+            for path in records {
+                named.push(read_record(&PathBuf::from(path))?);
+            }
+            finish_handback(&left, &right, &named)
+        }
+    }
 }
 
 /// The exit status an error from a command answers with.
@@ -345,12 +436,18 @@ fn cmd_handback(args: &HandbackArgs) -> anyhow::Result<i32> {
 /// A standard output failure discovered only at the exit
 /// flush answers with status 120, the status the Python
 /// tool exits with when it reports that failure as an
-/// exception ignored. Every other refusal the tool makes,
+/// exception ignored. A value slot the separator
+/// distribution filled with a list answers with status 1,
+/// the status the Python tool's uncaught error of the same
+/// shape exits with. Every other refusal the tool makes,
 /// the print failure its handler catches included, answers
 /// with status 2.
 fn refusal_status(error: &anyhow::Error) -> u8 {
     if error.downcast_ref::<FailedFlush>().is_some() {
         return 120;
+    }
+    if error.downcast_ref::<Uncaught>().is_some() {
+        return 1;
     }
     2
 }
@@ -510,6 +607,47 @@ enum Preprocess {
     /// the top level parser when the name is absent, at
     /// status 0.
     FireHelp(Option<String>),
+    /// Run the command the separator distribution assigned,
+    /// without clap.
+    Assigned(Assigned),
+}
+
+/// One positional slot of a command after the separator
+/// distribution the probe correction to XC-12 and XC-22
+/// records.
+enum Slot {
+    /// The slot received the one path token of its share.
+    One(OsString),
+    /// The slot received a list in place of a path, because
+    /// the deletion of its share's separator token left the
+    /// share holding no token. The text names the slot the
+    /// way the uncaught line names it.
+    Listed(&'static str),
+}
+
+/// A command whose arguments the separator distribution
+/// assigned in full, ready to run without clap.
+enum Assigned {
+    /// The stage command and its three slots in read order.
+    Stage {
+        /// The left branch state slot.
+        left: Slot,
+        /// The right branch state slot.
+        right: Slot,
+        /// The divergence record slot.
+        record: Slot,
+    },
+    /// The handback command, its two branch state slots in
+    /// read order, and the record paths of its bundle
+    /// share, which may be empty.
+    Handback {
+        /// The left branch state slot.
+        left: Slot,
+        /// The right branch state slot.
+        right: Slot,
+        /// The record paths of the bundle share.
+        records: Vec<OsString>,
+    },
 }
 
 /// Walk the arguments the way the Python parser's scan
@@ -518,11 +656,18 @@ enum Preprocess {
 /// The Python parser consumes its arguments from the left.
 /// Positional values are gathered in the order they stand
 /// and handed to clap behind a separator, so a value that
-/// reads as an option string reaches its slot as a value,
-/// and inside a subcommand the separator itself is consumed
-/// wherever it stands, one separator only, with every token
-/// after it a positional value, a second separator among
-/// them. A separator standing before any subcommand is read
+/// reads as an option string reaches its slot as a value.
+/// When the walk collects no option token on either level,
+/// the tokens after the subcommand go through the separator
+/// distribution the probe correction to XC-12 and XC-22
+/// records instead, which assigns them across the
+/// positional actions the way the oracle parser's own
+/// matching does, a second separator among the values
+/// included, and a complete distribution runs the command
+/// itself, because the list a single value action can
+/// receive under the distribution has no form the gathered
+/// hand off can carry. Every other shape keeps the gathered
+/// hand off. A separator standing before any subcommand is read
 /// as the subcommand candidate itself, so it blocks the
 /// walk, as do a word the subcommand slot cannot take and a
 /// help token carrying an explicit value, and past any of
@@ -544,6 +689,9 @@ fn preprocess(tokens: &[OsString]) -> Preprocess {
     let mut current: Option<usize> = None;
     let mut blocked = false;
     let mut separated = false;
+    let mut root_option = false;
+    let mut sub_option = false;
+    let mut sub_start: Option<usize> = None;
     for token in tokens {
         if separated {
             raw.push(token.clone());
@@ -583,6 +731,7 @@ fn preprocess(tokens: &[OsString]) -> Preprocess {
         if current.is_none() {
             if let Some(index) = specs.iter().position(|spec| spec.name == text) {
                 current = Some(index);
+                sub_start = Some(raw.len() - 1);
                 out.push(token.clone());
             } else if reads_as_positional(&text) {
                 blocked = true;
@@ -590,6 +739,7 @@ fn preprocess(tokens: &[OsString]) -> Preprocess {
                 // An option token at the top level is only
                 // collected, and a help token after it still
                 // fires.
+                root_option = true;
                 out.push(token.clone());
             }
             continue;
@@ -599,17 +749,128 @@ fn preprocess(tokens: &[OsString]) -> Preprocess {
         } else {
             // An option this parser does not declare is only
             // collected, and clap refuses it in the stream.
+            sub_option = true;
             out.push(token.clone());
         }
     }
     if blocked {
         return Preprocess::Run(raw);
     }
+    if !root_option
+        && !sub_option
+        && let (Some(index), Some(start)) = (current, sub_start)
+    {
+        let handback = specs[index].name == "handback";
+        if let Some(assigned) = distribute(handback, &raw[start + 1..]) {
+            return Preprocess::Assigned(assigned);
+        }
+    }
     if !values.is_empty() {
         out.push(OsString::from("--"));
         out.extend(values);
     }
     Preprocess::Run(out)
+}
+
+/// Whether a token reads as a plain argument token in the
+/// oracle parser's pattern scan, which is a token that does
+/// not open with a dash, or a lone dash, or a token carrying
+/// a space, or a token naming a negative number in the
+/// pattern. A token the parser would read as an option
+/// stands outside the separator distribution, so its
+/// presence leaves the whole invocation to the gathered
+/// hand off.
+fn reads_as_plain_argument(token: &OsString) -> bool {
+    use std::os::unix::ffi::OsStrExt;
+    let Some(text) = token.to_str() else {
+        return !token.as_os_str().as_bytes().starts_with(b"-");
+    };
+    if !text.starts_with('-') || text == "-" {
+        return true;
+    }
+    if text.contains(' ') {
+        return true;
+    }
+    negative_number_matches(text)
+}
+
+/// Whether a token is the separator token, two dashes and
+/// nothing else, compared on bytes so a token whose bytes
+/// are not text never reads as one.
+fn is_separator_token(token: &OsString) -> bool {
+    use std::os::unix::ffi::OsStrExt;
+    token.as_os_str().as_bytes() == b"--"
+}
+
+/// Distribute the tokens after a subcommand across the
+/// command's positional actions the way the oracle parser's
+/// pattern matching does, under the probe correction to
+/// XC-12 and XC-22.
+///
+/// Every token before the first separator token must read
+/// as a plain argument, and the assignment must be
+/// complete, three argument tokens for the stage command
+/// and at least three for the handback command, one to
+/// each single value action in order and the rest to the
+/// handback record action. The separator token joins the
+/// share of the argument token just before it, or the first
+/// share when it leads, and the first separator token of
+/// each share is then deleted from that share. A share an
+/// action cannot fill, or a token no action takes, leaves
+/// the invocation to the gathered hand off, where the usage
+/// refusal answers at status 2 before any file is read, as
+/// it does in the oracle.
+fn distribute(handback: bool, tokens: &[OsString]) -> Option<Assigned> {
+    let separator = tokens.iter().position(is_separator_token);
+    let head = separator.unwrap_or(tokens.len());
+    if tokens[..head]
+        .iter()
+        .any(|token| !reads_as_plain_argument(token))
+    {
+        return None;
+    }
+    let arguments = tokens.len() - usize::from(separator.is_some());
+    if arguments < 3 || (!handback && arguments != 3) {
+        return None;
+    }
+    let group_of = |count: usize| if handback { count.min(2) } else { count };
+    let mut shares: [Vec<OsString>; 3] = Default::default();
+    let mut seen = 0usize;
+    for (index, token) in tokens.iter().enumerate() {
+        if Some(index) == separator {
+            let target = if seen == 0 { 0 } else { group_of(seen - 1) };
+            shares[target].push(token.clone());
+        } else {
+            shares[group_of(seen)].push(token.clone());
+            seen += 1;
+        }
+    }
+    for share in &mut shares {
+        if let Some(at) = share.iter().position(is_separator_token) {
+            share.remove(at);
+        }
+    }
+    let single = |share: Vec<OsString>, name: &'static str| {
+        if share.len() == 1 {
+            Slot::One(share.into_iter().next().unwrap())
+        } else {
+            Slot::Listed(name)
+        }
+    };
+    let [left, right, rest] = shares;
+    if handback {
+        Some(Assigned::Handback {
+            left: single(left, "the left branch state"),
+            right: single(right, "the right branch state"),
+            records: rest,
+        })
+    } else {
+        Some(Assigned::Stage {
+            left: single(left, "the left branch state"),
+            right: single(right, "the right branch state"),
+            record: single(rest, "the divergence record"),
+        })
+    }
 }
 
 /// Write text to the error stream in one plain write and
@@ -673,6 +934,14 @@ fn main() -> ExitCode {
     let rest: Vec<OsString> = args.collect();
     let joined = match preprocess(&rest) {
         Preprocess::Run(joined) => joined,
+        Preprocess::Assigned(assigned) => {
+            return match cmd_assigned(&assigned) {
+                Ok(code) => ExitCode::from(code as u8),
+                Err(error) => {
+                    answer_error_line(&format!("error: {error}\n"), refusal_status(&error))
+                }
+            };
+        }
         Preprocess::FireHelp(subcommand) => {
             let mut argv = vec![program];
             if let Some(name) = subcommand {

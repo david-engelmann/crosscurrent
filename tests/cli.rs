@@ -200,3 +200,70 @@ fn cli_output_ignores_unrelated_files_beside_the_inputs() {
     assert_eq!(after.stdout, baseline.stdout);
     assert_eq!(after.stdout_text(), EXPECTED_HANDBACK);
 }
+
+/// Under the separator distribution a list in a later slot
+/// is met only when the read of that slot is reached. Here
+/// the right slot holds the list and the left state is
+/// malformed, so the left parse refusal answers at status
+/// 2 and the list is never met.
+#[test]
+fn cli_separator_list_in_a_later_slot_waits_for_the_earlier_reads() {
+    let dir = temp_dir("cli-sep-order-left");
+    let (left, right, record) = session(&dir, MALFORMED_STATE, RIGHT, RECORD);
+    let result = run_cli(&["handback", &left, "--", "--", &right, &record], &dir);
+    assert_eq!(result.code, 2);
+    let stderr = result.stderr_text();
+    assert!(stderr.contains("missing interface line"), "{stderr}");
+    assert!(!stderr.contains("given as a list"), "{stderr}");
+    assert_eq!(result.stdout, Vec::<u8>::new());
+}
+
+/// The same ordering from the other side. The record slot
+/// holds the list and the right state is malformed, so the
+/// right parse refusal answers at status 2 ahead of the
+/// list answer the record slot would have given.
+#[test]
+fn cli_separator_list_in_the_record_slot_waits_for_the_state_reads() {
+    let dir = temp_dir("cli-sep-order-record");
+    let (left, right, _) = session(&dir, LEFT, MALFORMED_STATE, RECORD);
+    let result = run_cli(&["stage", &left, &right, "--", "--"], &dir);
+    assert_eq!(result.code, 2);
+    let stderr = result.stderr_text();
+    assert!(stderr.contains("missing interface line"), "{stderr}");
+    assert!(!stderr.contains("given as a list"), "{stderr}");
+    assert_eq!(result.stdout, Vec::<u8>::new());
+}
+
+/// The mathematical alphanumeric digits carry five
+/// alphabets inside one span of the decimal ranges, and
+/// each alphabet starts its worths again at zero. A
+/// timeout written in any of the five stages against the
+/// plain digits by worth, at the ten a one and a zero
+/// spell and at the nine the last digit spells.
+#[test]
+fn cli_mathematical_alphanumeric_digits_stage_by_worth() {
+    let dir = temp_dir("cli-math-digits");
+    for base in [0x1D7CEu32, 0x1D7D8, 0x1D7E2, 0x1D7EC, 0x1D7F6] {
+        let digit = |offset: u32| char::from_u32(base + offset).unwrap();
+        for (written, plain) in [
+            (format!("{}{}", digit(1), digit(0)), "10"),
+            (digit(9).to_string(), "9"),
+        ] {
+            let left = format!("interface shard-store\nauthor engineer-a\n\ntimeout = {written}\n");
+            let right = format!("interface shard-store\nauthor engineer-b\n\ntimeout = {plain}\n");
+            let (left, right, record) = session(&dir, &left, &right, "");
+            let result = run_cli(&["stage", &left, &right, &record], &dir);
+            assert_eq!(result.code, 0);
+            assert!(
+                result.stdout_text().contains("clean: timeout"),
+                "base {base:#x} value {written} must stage clean against {plain}"
+            );
+        }
+    }
+    let left = "interface shard-store\nauthor engineer-a\n\ntimeout = \u{1D7D8}\n";
+    let right = "interface shard-store\nauthor engineer-b\n\ntimeout = 1\n";
+    let (left, right, record) = session(&dir, left, right, "");
+    let result = run_cli(&["stage", &left, &right, &record], &dir);
+    assert_eq!(result.code, 0);
+    assert!(result.stdout_text().contains("conflicting: timeout"));
+}

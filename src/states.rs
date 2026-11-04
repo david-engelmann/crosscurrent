@@ -255,14 +255,14 @@ pub fn parse_branch_state(text: &str, source: &str) -> Result<BranchState, Cross
         }
         let form = parse_statement_form(line);
         if form.is_none() {
-            if let Some(eq) = line.find('=') {
-                if pytext::strip(&line[eq + 1..]).is_empty() {
-                    return Err(StateError::new(format!(
-                        "{source} is malformed, line {lineno} states an \
-                         empty value"
-                    ))
-                    .into());
-                }
+            if let Some(eq) = line.find('=')
+                && pytext::strip(&line[eq + 1..]).is_empty()
+            {
+                return Err(StateError::new(format!(
+                    "{source} is malformed, line {lineno} states an \
+                     empty value"
+                ))
+                .into());
             }
             return Err(StateError::new(format!(
                 "{source} is malformed, line {lineno} matches no \

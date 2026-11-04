@@ -26,9 +26,9 @@ use std::path::{Path, PathBuf};
 use common::{run_cli, temp_dir};
 use serde_json::Value;
 
-const EXPECTED_CASES: usize = 78;
-const EXPECTED_ORACLE_CASES: usize = 31;
-const EXPECTED_CLAP_CASES: usize = 47;
+const EXPECTED_CASES: usize = 88;
+const EXPECTED_ORACLE_CASES: usize = 39;
+const EXPECTED_CLAP_CASES: usize = 49;
 
 fn string(value: &Value) -> &str {
     value.as_str().expect("corpus text is a string")
