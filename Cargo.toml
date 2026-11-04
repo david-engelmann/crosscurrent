@@ -1,0 +1,15 @@
+[package]
+name = "crosscurrent"
+version = "0.1.0"
+edition = "2024"
+description = "Reconcile detected divergence between two recorded branch states into sized tasks"
+license = "MIT"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+thiserror = "2"
+
+[dev-dependencies]
+serde_json = "1"
+sha2 = "0.10"
