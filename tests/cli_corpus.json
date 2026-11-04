@@ -1,0 +1,1908 @@
+{
+ "cases": [
+  {
+   "name": "no-args",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-long",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-short",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "-h"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-prefix-he",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--he"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-prefix-h",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--h"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-prefix-hel",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--hel"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-value-long",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--help=x"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected value 'x' for '--help' found; no more were expected\n\nUsage: crosscurrent --help <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-value-short",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "-h=x"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected value 'x' for '--help' found; no more were expected\n\nUsage: crosscurrent --help <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-bundle-hx",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "-hx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-bundle-xh",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "-xh"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '-x' found\n\nUsage: crosscurrent <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-help",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the cross-apply report for two branch states\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nArguments:\n  <LEFT>         Path to the left recorded branch state\n  <RIGHT>        Path to the right recorded branch state\n  <DIVERGENCES>  Path to the recorded divergence record\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-help-short",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "-h"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the cross-apply report for two branch states\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nArguments:\n  <LEFT>         Path to the left recorded branch state\n  <RIGHT>        Path to the right recorded branch state\n  <DIVERGENCES>  Path to the recorded divergence record\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-help",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "handback",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print one sized reconciliation task per divergence\n\nUsage: crosscurrent handback <LEFT> <RIGHT> <DIVERGENCES>...\n\nArguments:\n  <LEFT>            Path to the left recorded branch state\n  <RIGHT>           Path to the right recorded branch state\n  <DIVERGENCES>...  Paths to the recorded divergence records of the bundle\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-complete-then-help",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "R.state",
+    "rec.txt",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the cross-apply report for two branch states\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nArguments:\n  <LEFT>         Path to the left recorded branch state\n  <RIGHT>        Path to the right recorded branch state\n  <DIVERGENCES>  Path to the recorded divergence record\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-complete-extra-then-help",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "R.state",
+    "rec.txt",
+    "extra",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the cross-apply report for two branch states\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nArguments:\n  <LEFT>         Path to the left recorded branch state\n  <RIGHT>        Path to the right recorded branch state\n  <DIVERGENCES>  Path to the recorded divergence record\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-complete-extra-then-help",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "handback",
+    "L.state",
+    "R.state",
+    "rec.txt",
+    "extra",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print one sized reconciliation task per divergence\n\nUsage: crosscurrent handback <LEFT> <RIGHT> <DIVERGENCES>...\n\nArguments:\n  <LEFT>            Path to the left recorded branch state\n  <RIGHT>           Path to the right recorded branch state\n  <DIVERGENCES>...  Paths to the recorded divergence records of the bundle\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-help-first",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "--help",
+    "L.state"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the cross-apply report for two branch states\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nArguments:\n  <LEFT>         Path to the left recorded branch state\n  <RIGHT>        Path to the right recorded branch state\n  <DIVERGENCES>  Path to the recorded divergence record\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-then-stage",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--help",
+    "stage"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-then-bad",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--help",
+    "badcmd"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "bad-subcommand",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "badcmd"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unrecognized subcommand 'badcmd'\n\nUsage: crosscurrent <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "bad-then-help",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "badcmd",
+    "--help"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unrecognized subcommand 'badcmd'\n\nUsage: crosscurrent <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "unknown-then-help",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--bogus",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "help-then-unknown",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--help",
+    "--bogus"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-unknown-then-help",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "--bogus",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the cross-apply report for two branch states\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nArguments:\n  <LEFT>         Path to the left recorded branch state\n  <RIGHT>        Path to the right recorded branch state\n  <DIVERGENCES>  Path to the recorded divergence record\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-one-unknown-then-help",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "--bogus",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the cross-apply report for two branch states\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nArguments:\n  <LEFT>         Path to the left recorded branch state\n  <RIGHT>        Path to the right recorded branch state\n  <DIVERGENCES>  Path to the recorded divergence record\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "separator-alone",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "separator-then-stage",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--",
+    "stage",
+    "L.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument 'stage' found\n\n  tip: subcommand 'stage' exists; to use it, remove the '--' before it\n\nUsage: crosscurrent <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-separator-first",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "--",
+    "L.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "interface shard-store\nauthors engineer-a engineer-b\nclean: store\nconflicting: timeout\none-sided: none\nmissing: none\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-separator-middle",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "--",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "interface shard-store\nauthors engineer-a engineer-b\nclean: store\nconflicting: timeout\none-sided: none\nmissing: none\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-separator-before-record",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "R.state",
+    "--",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "interface shard-store\nauthors engineer-a engineer-b\nclean: store\nconflicting: timeout\none-sided: none\nmissing: none\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-trailing-separator",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "R.state",
+    "rec.txt",
+    "--"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "interface shard-store\nauthors engineer-a engineer-b\nclean: store\nconflicting: timeout\none-sided: none\nmissing: none\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-separator-extra",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "R.state",
+    "rec.txt",
+    "--",
+    "extra"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument 'extra' found\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-separator-help-value",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "--",
+    "--help",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read --help, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-negative",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "-1",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -1, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-negative-fraction",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "-1.5",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -1.5, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-negative-trailing-point",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "-1.",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '-1' found\n\n  tip: to pass '-1' as a value, use '-- -1'\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-negative-exponent",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "-1e3",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '-1' found\n\n  tip: to pass '-1' as a value, use '-- -1'\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-help-with-space",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "-h x",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the cross-apply report for two branch states\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nArguments:\n  <LEFT>         Path to the left recorded branch state\n  <RIGHT>        Path to the right recorded branch state\n  <DIVERGENCES>  Path to the recorded divergence record\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-subcommand-prefix",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "sta"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: the following required arguments were not provided:\n  <RIGHT>\n  <DIVERGENCES>\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "subcommand-prefix",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "sta"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unrecognized subcommand 'sta'\n\n  tip: a similar subcommand exists: 'stage'\n\nUsage: crosscurrent <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "subcommand-single-letter",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "h"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unrecognized subcommand 'h'\n\n  tip: a similar subcommand exists: 'handback'\n\nUsage: crosscurrent <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-stage-as-path",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "stage"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: the following required arguments were not provided:\n  <RIGHT>\n  <DIVERGENCES>\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-extra",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "R.state",
+    "rec.txt",
+    "extra"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument 'extra' found\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-pair",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "interface shard-store\nauthors engineer-a engineer-b\nclean: store\nconflicting: timeout\none-sided: none\nmissing: none\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-pair",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "handback",
+    "L.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "task shard-store timeout\nauthors engineer-a engineer-b\nkind term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\nsize small score 2\nfactors definitions 2, result-type no, breaking no\nstaging clean 1, conflicting 1, one-sided 0, missing 0\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-two-records",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "handback",
+    "L.state",
+    "R.state",
+    "rec.txt",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "task shard-store timeout\nauthors engineer-a engineer-b\nkind term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\nsize small score 2\nfactors definitions 2, result-type no, breaking no\nstaging clean 1, conflicting 1, one-sided 0, missing 0\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-separator-record",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "handback",
+    "L.state",
+    "R.state",
+    "--",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "task shard-store timeout\nauthors engineer-a engineer-b\nkind term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\nsize small score 2\nfactors definitions 2, result-type no, breaking no\nstaging clean 1, conflicting 1, one-sided 0, missing 0\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-help-first",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "handback",
+    "--help",
+    "L.state"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print one sized reconciliation task per divergence\n\nUsage: crosscurrent handback <LEFT> <RIGHT> <DIVERGENCES>...\n\nArguments:\n  <LEFT>            Path to the left recorded branch state\n  <RIGHT>           Path to the right recorded branch state\n  <DIVERGENCES>...  Paths to the recorded divergence records of the bundle\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-presence",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "prec.txt": "divergence shard-store cache-ttl presence\n  left (run-a.tape) cache-ttl = 300\n  right (run-b.tape) interface shard-store\n"
+   },
+   "argv": [
+    "handback",
+    "L.state",
+    "R.state",
+    "prec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "task shard-store cache-ttl\nauthors engineer-a engineer-b\nkind presence\n  left (run-a.tape) cache-ttl = 300\n  right (run-b.tape) interface shard-store\nsize small score 1\nfactors definitions 1, result-type no, breaking no\nstaging clean 1, conflicting 1, one-sided 0, missing 1\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "prec.txt": "divergence shard-store cache-ttl presence\n  left (run-a.tape) cache-ttl = 300\n  right (run-b.tape) interface shard-store\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-empty-record",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "empty.txt": ""
+   },
+   "argv": [
+    "handback",
+    "L.state",
+    "R.state",
+    "empty.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "empty.txt": "",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-missing-second-record",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "handback",
+    "L.state",
+    "R.state",
+    "rec.txt",
+    "missing.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read missing.txt, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-unknown-short",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "-x"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '-x' found\n\n  tip: to pass '-x' as a value, use '-- -x'\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-unknown-short-second",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "-x",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '-x' found\n\n  tip: to pass '-x' as a value, use '-- -x'\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "unknown-short-top",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "-x"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '-x' found\n\nUsage: crosscurrent <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "version-top",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "--version"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '--version' found\n\nUsage: crosscurrent <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-version",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "--version"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '--version' found\n\n  tip: to pass '--version' as a value, use '-- --version'\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "bare-missing-path",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "missing.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unrecognized subcommand 'missing.state'\n\nUsage: crosscurrent <COMMAND>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-missing-left",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "missing.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read missing.state, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-dotted-missing",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "./missing.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read missing.state, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-double-slash-missing",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "sub/.keep": ""
+   },
+   "argv": [
+    "stage",
+    "sub//missing.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read sub/missing.state, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+     "sub/.keep": ""
+    }
+   }
+  },
+  {
+   "name": "stage-dotdot-missing",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "sub/.keep": ""
+   },
+   "argv": [
+    "stage",
+    "sub/../missing.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read sub/../missing.state, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+     "sub/.keep": ""
+    }
+   }
+  },
+  {
+   "name": "stage-rooted-double-slash-missing",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "//missing.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read //missing.state, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-rooted-missing",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "/definitely/missing.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read /definitely/missing.state, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-empty-path",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read ., Is a directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-dot-path",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    ".",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read ., Is a directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-directory",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "adir/.keep": ""
+   },
+   "argv": [
+    "stage",
+    "adir",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read adir, Is a directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "adir/.keep": "",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-directory-slash",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "adir/.keep": ""
+   },
+   "argv": [
+    "stage",
+    "adir/",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read adir, Is a directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "adir/.keep": "",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-sub-dot-existing",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "sub/L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n"
+   },
+   "argv": [
+    "stage",
+    "sub/./L.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "interface shard-store\nauthors engineer-a engineer-b\nclean: store\nconflicting: timeout\none-sided: none\nmissing: none\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+     "sub/L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n"
+    }
+   }
+  },
+  {
+   "name": "stage-sub-double-slash-existing",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "sub/L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n"
+   },
+   "argv": [
+    "stage",
+    "sub//L.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "interface shard-store\nauthors engineer-a engineer-b\nclean: store\nconflicting: timeout\none-sided: none\nmissing: none\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+     "sub/L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n"
+    }
+   }
+  },
+  {
+   "name": "stage-missing-record",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state",
+    "R.state",
+    "missing.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read missing.txt, No such file or directory\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-malformed-left",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "bad.state": "timeout = 30\n"
+   },
+   "argv": [
+    "stage",
+    "bad.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: bad.state is malformed, missing interface line, line 1 does not name an interface\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "bad.state": "timeout = 30\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-bom-left",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "bom.state": "\ufeffinterface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n"
+   },
+   "argv": [
+    "stage",
+    "bom.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: bom.state is malformed, missing interface line, line 1 does not name an interface\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "bom.state": "\ufeffinterface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-crlf-left",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "crlf.state": "interface shard-store\r\nauthor engineer-a\r\n\r\ntimeout = 30\r\noperation store = ack\r\n"
+   },
+   "argv": [
+    "stage",
+    "crlf.state",
+    "R.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "interface shard-store\nauthors engineer-a engineer-b\nclean: store\nconflicting: timeout\none-sided: none\nmissing: none\n",
+    "stderr": "",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "crlf.state": "interface shard-store\r\nauthor engineer-a\r\n\r\ntimeout = 30\r\noperation store = ack\r\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-interface-mismatch",
+   "source": "oracle",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n",
+    "other.state": "interface shard-cache\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n"
+   },
+   "argv": [
+    "handback",
+    "L.state",
+    "other.state",
+    "rec.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: branch states name different interfaces, L.state names shard-store and other.state names shard-cache\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "other.state": "interface shard-cache\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-one-arg",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage",
+    "L.state"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: the following required arguments were not provided:\n  <RIGHT>\n  <DIVERGENCES>\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-no-record",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "handback",
+    "L.state",
+    "R.state"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: the following required arguments were not provided:\n  <DIVERGENCES>...\n\nUsage: crosscurrent handback <LEFT> <RIGHT> <DIVERGENCES>...\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "handback-no-args",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "handback"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: the following required arguments were not provided:\n  <LEFT>\n  <RIGHT>\n  <DIVERGENCES>...\n\nUsage: crosscurrent handback <LEFT> <RIGHT> <DIVERGENCES>...\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  },
+  {
+   "name": "stage-no-args",
+   "source": "clap",
+   "setup": {
+    "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+    "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+    "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+   },
+   "argv": [
+    "stage"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: the following required arguments were not provided:\n  <LEFT>\n  <RIGHT>\n  <DIVERGENCES>\n\nUsage: crosscurrent stage <LEFT> <RIGHT> <DIVERGENCES>\n\nFor more information, try '--help'.\n",
+    "files": {
+     "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
+     "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
+     "rec.txt": "divergence shard-store timeout term-value\n  left (run-a.tape) timeout = 30\n  right (run-b.tape) timeout = 45\n"
+    }
+   }
+  }
+ ]
+}
