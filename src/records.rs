@@ -9,7 +9,7 @@
 //! that row is not a definition. The bundle helpers after
 //! the parser state what several records over the one pair
 //! of sources mean for a single session, under XC-19 and
-//! XC-20.
+//! the set identity of XC-33.
 
 use std::collections::{BTreeMap, HashMap, HashSet};
 
@@ -231,21 +231,51 @@ fn source_text(side: &Option<String>) -> String {
     side.clone().unwrap_or_else(|| "None".to_string())
 }
 
+/// One quoted row in the printed form the handback gives
+/// it, two spaces, the side, the source in parentheses, and
+/// the quoted line. The tiebreak of XC-21 reads rows in
+/// this form, and the canonical order of XC-34 is the
+/// ascending order of this form, so the two are the one
+/// reading of a row and never two sortings that resemble
+/// each other.
+pub fn printed_row(row: &QuotedLine) -> String {
+    format!("  {} ({}) {}", row.side, row.source, row.line)
+}
+
+/// A divergence with its quoted rows in the canonical
+/// order of XC-34, ascending by printed form. The printed
+/// rows inside one block are pairwise distinct, because the
+/// grammar gives each row a distinct side and form
+/// combination, so the order is total over the set and no
+/// two distinct rows share a printed form to be merged by
+/// it. The excludes row and the interface row are values
+/// the divergence carries and are untouched by the
+/// reordering, and the definitions a task counts compare
+/// rows by value, so the sizing reads the same rows before
+/// and after.
+fn canonical_divergence(divergence: &Divergence) -> Divergence {
+    let mut canonical = divergence.clone();
+    canonical.rows.sort_by_key(printed_row);
+    canonical
+}
+
 /// The two side sources one record names, either of which
 /// the record may leave unnamed.
 type SideSources = (Option<String>, Option<String>);
 
 /// Union the divergences of a bundle of records under
-/// XC-19 and XC-20.
+/// XC-19 and XC-33.
 ///
 /// The argument pairs each record name with the divergences
 /// parsed from that record. Every record that carries a
 /// divergence must establish the same left source and the
 /// same right source, and a record that establishes
-/// different sources refuses the bundle. An exact duplicate
-/// of a divergence, identified by its interface and its
-/// name and its kind and its quoted rows, enters the union
-/// once.
+/// different sources refuses the bundle. A divergence is
+/// identified by its interface and its name and its kind
+/// and the set of its quoted rows, so an exact duplicate
+/// and a duplicate whose rows stand in a different order
+/// alike enter the union once, and the divergence the union
+/// carries holds its rows in the canonical order of XC-34.
 pub fn bundle_divergences(
     records: &[(String, Vec<Divergence>)],
 ) -> Result<Vec<Divergence>, CrosscurrentError> {
@@ -275,14 +305,15 @@ pub fn bundle_divergences(
             }
         }
         for divergence in divergences {
+            let canonical = canonical_divergence(divergence);
             let key = (
-                divergence.interface.clone(),
-                divergence.name.clone(),
-                divergence.kind.clone(),
-                divergence.rows.clone(),
+                canonical.interface.clone(),
+                canonical.name.clone(),
+                canonical.kind.clone(),
+                canonical.rows.clone(),
             );
             if seen.insert(key) {
-                union.push(divergence.clone());
+                union.push(canonical);
             }
         }
     }
