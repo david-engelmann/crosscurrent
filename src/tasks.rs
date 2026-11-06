@@ -19,7 +19,9 @@ pub struct Task {
     pub left_author: String,
     /// The author role of the right state.
     pub right_author: String,
-    /// Every quoted row of the divergence, in record order.
+    /// Every quoted row of the divergence, in record order from
+    /// one record and in the canonical printed form order from a
+    /// bundle.
     pub rows: Vec<crate::records::QuotedLine>,
     /// The number of quoted defining lines.
     pub definitions: usize,
