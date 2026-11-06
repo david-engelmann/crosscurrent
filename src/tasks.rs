@@ -2,7 +2,7 @@
 //! authors.
 
 use crate::errors::{CrosscurrentError, TaskError};
-use crate::records::{Divergence, RESULT_TYPE, bundle_divergences};
+use crate::records::{Divergence, RESULT_TYPE, bundle_divergences, printed_row};
 use crate::staging::{CrossApply, check_session_interface};
 use crate::states::{BranchState, parse_statement_form};
 
@@ -19,7 +19,9 @@ pub struct Task {
     pub left_author: String,
     /// The author role of the right state.
     pub right_author: String,
-    /// Every quoted row of the divergence, in record order.
+    /// Every quoted row of the divergence, in record order from
+    /// one record and in the canonical printed form order from a
+    /// bundle.
     pub rows: Vec<crate::records::QuotedLine>,
     /// The number of quoted defining lines.
     pub definitions: usize,
@@ -55,13 +57,10 @@ fn band(score: usize) -> &'static str {
 }
 
 /// The quoted rows of a divergence in the form the handback
-/// prints them.
+/// prints them, the one printed form of records::printed_row
+/// that the canonical order of XC-34 also reads.
 fn printed_rows(divergence: &Divergence) -> Vec<String> {
-    divergence
-        .rows
-        .iter()
-        .map(|row| format!("  {} ({}) {}", row.side, row.source, row.line))
-        .collect()
+    divergence.rows.iter().map(printed_row).collect()
 }
 
 /// Build one sized task per divergence, in handback order.
@@ -105,13 +104,16 @@ pub fn build_tasks(
 }
 
 /// Build the tasks of a bundle handback under XC-19 to
-/// XC-21.
+/// XC-21, with the set identity of XC-33 and the canonical
+/// row order of XC-34 the union applies.
 ///
 /// The records argument pairs each record name with the
 /// divergences parsed from that record. The tasks are built
 /// from the union of the bundle exactly as build_tasks
 /// builds them from one record, so a bundle of one record
-/// states the same tasks as that record on its own.
+/// states the same tasks as that record on its own, with
+/// its rows in the canonical order where they stood out of
+/// it.
 pub fn build_tasks_bundle(
     left: &BranchState,
     right: &BranchState,
@@ -205,7 +207,7 @@ pub fn format_tasks(tasks: &[Task]) -> String {
             format!("kind {}", task.kind),
         ];
         for row in &task.rows {
-            lines.push(format!("  {} ({}) {}", row.side, row.source, row.line));
+            lines.push(printed_row(row));
         }
         lines.push(format!("size {} score {}", task.band, task.score));
         lines.push(format!(
