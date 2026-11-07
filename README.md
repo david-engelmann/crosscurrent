@@ -58,13 +58,13 @@ missing: none
 
 ### handback
 
-`crosscurrent handback <left-state> <right-state> <record> [<record> ...]` prints one sized reconciliation task for each divergence over a bundle of records, as the block at the top of this page shows for a bundle of one. A divergence two records of the bundle carry is one task, identified by the set of its quoted rows and never by their order, and every task prints its quoted rows in the printed form order. Each task states the interface and the name that diverged, both conflicting forms as the record quotes them, the size of the work with the factors behind it, and the staging counts of the pair.
+`crosscurrent handback <left-state> <right-state> <record> [<record> ...]` prints one sized reconciliation task for each divergence over a bundle of records, as the block at the top of this page shows for a bundle of one. A divergence two records of the bundle carry is one task, identified by the set of its quoted rows and never by their order, and every task prints its quoted rows in the printed form order. Each task states the interface and the name that diverged and prints the rows the record quotes for it, both conflicting forms where the two sides state the name in the same form, and for a presence divergence the one-sided statement beside the other side's interface line, and it states the size of the work with the factors behind it and the staging counts of the pair.
 
-Every command reads only the files it is handed. A branch state or a record that is malformed or cannot be read refuses with one error line and exit status 2, and a malformed invocation exits with status 2.
+Every command reads only the files it is handed. A branch state or a record that is malformed or cannot be read refuses with one error line and exit status 2, and a malformed invocation exits with status 2. A line that cannot be printed because its stream is already gone answers with status 120 instead, as XC-29 states.
 
 ## Status
 
-The tool is complete at the surface its contract describes, with no stubbed or held back part, and the full CI gate runs on every change. Closed rounds 6 of 100.
+The tool is complete at the surface its contract describes, with no stubbed or held back part, and the full CI gate runs on every change. Closed rounds 6 of 100. The first committed example record names the branch states themselves as its sources, and no run of forkdrift over committed files regenerates it, because the author and breaking lines are grammar this repo alone defines. The presence and bundle example records name the committed tapes as their sources, and the presence record carries a timeout divergence between the tapes that the presence branch states do not carry.
 
 ## License
 

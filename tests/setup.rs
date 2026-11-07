@@ -131,9 +131,14 @@ fn the_description_stands_on_every_surface() {
         .expect("the README carries a lede line");
     assert_eq!(lede, DESCRIPTION, "the README lede must be the description");
     let manifest = read_repo("Cargo.toml");
-    assert!(
-        manifest.contains(&format!("description = \"{DESCRIPTION}\"")),
-        "the package description field must be the description"
+    let description_lines: Vec<&str> = manifest
+        .lines()
+        .filter(|line| line.starts_with("description ="))
+        .collect();
+    assert_eq!(
+        description_lines,
+        vec![format!("description = \"{DESCRIPTION}\"").as_str()],
+        "the manifest must carry exactly one description field, the description"
     );
     let lib = read_repo("src/lib.rs");
     let doc_line = lib.lines().next().expect("the crate carries doc lines");
