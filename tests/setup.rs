@@ -102,7 +102,7 @@ fn readme_status_reports_rounds() {
     };
     assert_eq!(
         count_in(&text),
-        ["6"],
+        ["7"],
         "README status must report exactly one closed round count and it must be 6"
     );
     let status_at = text
@@ -115,7 +115,7 @@ fn readme_status_reports_rounds() {
     };
     assert_eq!(
         count_in(status),
-        ["6"],
+        ["7"],
         "the closed round count must stand in the Status section itself"
     );
 }
