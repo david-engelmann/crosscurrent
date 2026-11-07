@@ -12,7 +12,7 @@
    "expect": {
     "code": 2,
     "stdout": "",
-    "stderr": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
      "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",
@@ -33,7 +33,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -55,7 +55,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -77,7 +77,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -99,7 +99,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -121,7 +121,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -187,7 +187,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -405,7 +405,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -428,7 +428,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -496,7 +496,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -519,7 +519,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": "",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
@@ -591,7 +591,7 @@
    "expect": {
     "code": 2,
     "stdout": "",
-    "stderr": "Reconcile detected divergence between two recorded branch states into sized tasks.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.\n\nUsage: crosscurrent <COMMAND>\n\nCommands:\n  stage     Print the cross-apply report for two branch states\n  handback  Print one sized reconciliation task per divergence\n\nOptions:\n  -h, --help  Print help\n",
     "files": {
      "L.state": "interface shard-store\nauthor engineer-a\n\ntimeout = 30\noperation store = ack\n",
      "R.state": "interface shard-store\nauthor engineer-b\n\ntimeout = 45\noperation store = ack\n",

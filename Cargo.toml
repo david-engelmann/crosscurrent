@@ -2,7 +2,7 @@
 name = "crosscurrent"
 version = "0.1.0"
 edition = "2024"
-description = "Reconcile detected divergence between two recorded branch states into sized tasks"
+description = "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence."
 license = "MIT"
 
 [dependencies]

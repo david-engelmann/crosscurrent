@@ -46,7 +46,7 @@ use crosscurrent::tasks::{build_tasks, format_tasks};
 
 #[derive(Parser)]
 #[command(
-    about = "Reconcile detected divergence between two recorded branch states into sized tasks.",
+    about = "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.",
     subcommand_required = true,
     infer_long_args = true,
     disable_help_subcommand = true
