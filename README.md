@@ -64,7 +64,7 @@ Every command reads only the files it is handed. A branch state or a record that
 
 ## Status
 
-The tool is complete at the surface its contract describes, with no stubbed or held back part, and the full CI gate runs on every change. Closed rounds 6 of 100. The first committed example record names the branch states themselves as its sources, and no run of forkdrift over committed files regenerates it, because the author and breaking lines are grammar this repo alone defines. The presence and bundle example records name the committed tapes as their sources, and the presence record carries a timeout divergence between the tapes that the presence branch states do not carry.
+The tool is complete at the surface its contract describes, with no stubbed or held back part, and the full CI gate runs on every change. Closed rounds 7 of 100. The first committed example record names the branch states themselves as its sources, and no run of forkdrift over committed files regenerates it, because the author and breaking lines are grammar this repo alone defines. The presence and bundle example records name the committed tapes as their sources, and the presence record carries a timeout divergence between the tapes that the presence branch states do not carry.
 
 ## License
 
