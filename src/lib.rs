@@ -1,5 +1,4 @@
-//! Crosscurrent, the reconciler of detected divergence
-//! between two recorded branch states.
+//! Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.
 //!
 //! Detection hands crosscurrent two recorded branch states
 //! and the divergence records a detector printed over one

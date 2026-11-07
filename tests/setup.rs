@@ -120,6 +120,40 @@ fn readme_status_reports_rounds() {
     );
 }
 
+const DESCRIPTION: &str = "Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.";
+
+#[test]
+fn the_description_stands_on_every_surface() {
+    let readme = read_repo("README.md");
+    let lede = readme
+        .lines()
+        .find(|line| !line.is_empty() && !line.starts_with('#'))
+        .expect("the README carries a lede line");
+    assert_eq!(lede, DESCRIPTION, "the README lede must be the description");
+    let manifest = read_repo("Cargo.toml");
+    assert!(
+        manifest.contains(&format!("description = \"{DESCRIPTION}\"")),
+        "the package description field must be the description"
+    );
+    let lib = read_repo("src/lib.rs");
+    let doc_line = lib.lines().next().expect("the crate carries doc lines");
+    assert_eq!(
+        doc_line,
+        format!("//! {DESCRIPTION}"),
+        "the first crate doc line must be the description"
+    );
+    let corpus = read_repo("tests/cli_corpus.json");
+    assert!(
+        corpus.contains(DESCRIPTION),
+        "the corpus root help expectations must carry the description"
+    );
+    let main = read_repo("src/main.rs");
+    assert!(
+        main.contains(&format!("about = \"{DESCRIPTION}\"")),
+        "the command line about must carry the description"
+    );
+}
+
 /// The dependency names a manifest declares, split into
 /// the set the shipped targets build against and the set
 /// only the tests build against. A section whose name ends

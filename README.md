@@ -1,15 +1,71 @@
 # crosscurrent
 
-A reconciliation protocol for parallel agent work, where every agent's diff is continuously cross-applied against a shared staging branch and divergence is handed back to the pair that caused it while both are still live.
+Receives one forkdrift report and works the divergence, staging records, applying and undoing patches in its own workspace, and building a task for each divergence.
 
-## What this is
+Crosscurrent is a command line tool that reconciles recorded divergence. It reads two recorded branch states and one or more divergence records of the form forkdrift prints, and it cross-applies the two states in its own staging area to sort every name the states carry into the names that agree and the names that conflict. It prints either the staging report for one record or one sized reconciliation task for each divergence in a bundle of records. Every input is a recorded file and every run finishes from the files it is handed, and crosscurrent reconciles only the pairs it is handed. Finding divergence across the fleet is forkdrift's work and never moves here.
 
-Worktree tools isolate agents well and do nothing about semantic drift, so everything compiles and merges cleanly and the integration tax arrives all at once. Crosscurrent runs two mechanisms instead of a merge tool. A staging branch continuously absorbs every live agent's diff, so integration is a stream and not an event. And each divergence that detection hands it is returned to the pair that created it as a sized reconciliation task, never saved up for a human merge day. Detection itself sits with its sibling. Forkdrift's detector works above the text level, flagging two incompatible contracts for one interface or a helper written twice under two names. The boundary with its sibling is one sentence. Forkdrift finds the divergence across the fleet, crosscurrent reconciles the pairs it catches.
+[![CI](https://github.com/david-engelmann/crosscurrent/actions/workflows/ci.yml/badge.svg)](https://github.com/david-engelmann/crosscurrent/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+```console
+$ ./target/debug/crosscurrent handback examples/branch-a.state examples/branch-b.state examples/divergences.txt
+task shard-store store
+authors engineer-a engineer-b
+kind result-type
+  left (examples/branch-a.state) operation store = ack
+  right (examples/branch-b.state) operation store = receipt
+size large score 7
+factors definitions 2, result-type yes, breaking yes
+staging clean 2, conflicting 1, one-sided 1, missing 0
+```
+
+## Install
+
+Crosscurrent is a Rust crate that builds from source with cargo.
+
+```sh
+git clone https://github.com/david-engelmann/crosscurrent.git
+cd crosscurrent
+cargo build
+```
+
+The binary lands at target/debug/crosscurrent, and the test suite runs with `cargo test`.
+
+## Quickstart
+
+From the repository root, with the committed examples.
+
+```sh
+./target/debug/crosscurrent handback examples/branch-a.state examples/branch-b.state examples/divergences.txt
+```
+
+The command prints the handback at the top of this page, one task for the one divergence the record carries, with the size of the work and the staging counts of the pair behind it.
+
+## Usage
+
+### stage
+
+`crosscurrent stage <left-state> <right-state> <record>` reads two recorded branch states and one divergence record and prints the cross-apply report. The report names the interface and its two authors and sorts the names of the interface into the names that agree on both sides, the names that conflict, the names only one side states, and the names a divergence expects that neither side states.
+
+```console
+$ ./target/debug/crosscurrent stage examples/branch-a.state examples/branch-b.state examples/divergences.txt
+interface shard-store
+authors engineer-a engineer-b
+clean: replicas, timeout
+conflicting: store
+one-sided: cache-ttl (left only)
+missing: none
+```
+
+### handback
+
+`crosscurrent handback <left-state> <right-state> <record> [<record> ...]` prints one sized reconciliation task for each divergence over a bundle of records, as the block at the top of this page shows for a bundle of one. A divergence two records of the bundle carry is one task, identified by the set of its quoted rows and never by their order, and every task prints its quoted rows in the printed form order. Each task states the interface and the name that diverged, both conflicting forms as the record quotes them, the size of the work with the factors behind it, and the staging counts of the pair.
+
+Every command reads only the files it is handed. A branch state or a record that is malformed or cannot be read refuses with one error line and exit status 2, and a malformed invocation exits with status 2.
 
 ## Status
 
-Round 6 landed in PR 12 and is recorded closed here. It reads the quoted rows of a bundle divergence as a set, so a divergence two records of a bundle carry with its rows in different orders produces one task, and that task prints its quoted rows in the printed form order the handback's own tiebreak reads. The round stands stated under contract obligations XC-33 to XC-36, and XC-33 names XC-20 as amended on the identity point it reaches and XC-36 names the closing sentence of XC-21 as qualified on the one record bundle point. The stage surface and the paths that build tasks from one record keep their behaviour byte for byte. Round 5 landed in PR 10 and is recorded closed here. It ports crosscurrent to a native Rust crate with no change to the contracted behaviour, proven against the Python implementation it replaces over the committed examples, a generated command line corpus, and differential runs over the divergence kinds and the staging classes and the Decimal value grammar and the path spellings the read refusals name. The Python implementation is removed in the same slice, and the port stands stated under contract obligations XC-23 to XC-32, with probe corrections recorded against XC-5 and XC-12 and XC-22. The committed example records carry their provenance on their face. The first record names the branch states themselves as its sources and quotes the store lines both states carry, and forkdrift refuses the branch states because the author and breaking lines are grammar this repo alone defines, so no run of the sibling tool over committed files regenerates that record, while the handback from it reproduces byte for byte. The presence record names the committed tapes as its sources and is exactly what forkdrift's comparison prints over those tapes, and it carries a timeout divergence between the tapes that the presence branch states do not carry, since both presence branch states state the same timeout and stage it clean. The bundle records name the same two committed tapes as their sources on every row they quote, examples/presence-run-a.tape on the left and examples/presence-run-b.tape on the right. Round 4 landed in PR 8 and is recorded closed here. The staging model and the handback over recorded branch states are in place under contract obligations XC-1 to XC-22, reading the divergence records forkdrift emits and returning one sized reconciliation task per divergence to the two authors. Closed rounds 6 of 100. Part of the impatient programming portfolio, in the Fleet Operations arc.
+The tool is complete at the surface its contract describes, with no stubbed or held back part, and the full CI gate runs on every change. Closed rounds 6 of 100.
 
-## Licence
+## License
 
-MIT. See LICENSE.
+MIT. See [LICENSE](LICENSE).
