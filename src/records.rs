@@ -91,14 +91,10 @@ struct PendingBlock {
 /// pair the rest of the form can complete behind, exactly
 /// as the oracle's row pattern reads it.
 fn match_row(raw: &str) -> Option<(String, String, String)> {
-    let rest = if let Some(rest) = raw.strip_prefix("  left (") {
-        ("left", rest)
-    } else if let Some(rest) = raw.strip_prefix("  right (") {
-        ("right", rest)
-    } else {
-        return None;
-    };
-    let (side, rest) = rest;
+    let (side, rest) = raw
+        .strip_prefix("  left (")
+        .map(|rest| ("left", rest))
+        .or_else(|| raw.strip_prefix("  right (").map(|rest| ("right", rest)))?;
     let bytes = rest.as_bytes();
     let mut index = 0usize;
     let mut source_end: Option<usize> = None;
