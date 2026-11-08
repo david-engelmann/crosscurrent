@@ -56,7 +56,7 @@ Verify claims from the thing itself. A result is read from the file on disk, the
 
 This repo is crosscurrent. Its contract lives in CONTRACT.md and that file is the spec for every slice.
 
-Boundary. Crosscurrent reconciles the pairs forkdrift catches. Forkdrift, also owned by this chat, detects divergence across the whole fleet, and crosscurrent never takes over detection of the fleet at large.
+Boundary. This repo is folded into forkdrift. Its session work stands as the reconcile subcommand in forkdrift, and this repo is closed to further rounds.
 
 First slice. A staging branch that cross-applies two live branches and hands one detected divergence back to its two authors as a sized reconciliation task while both are still live.
 
